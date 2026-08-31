@@ -17,7 +17,7 @@
         <Border Grid.Row="0" Background="#FFFFFF" BorderBrush="#DFE3EA" BorderThickness="0,0,0,1">
             <DockPanel Margin="24,0">
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="有人值守 RPA AI 客服客户端" FontSize="22" FontWeight="SemiBold" Foreground="#1F2937" />
+                    <TextBlock Text="个人微信工作号RPA AI客服客户端" FontSize="22" FontWeight="SemiBold" Foreground="#1F2937" />
                     <TextBlock Text="M4.5：当前微信会话 OCR、AI 回复建议、审核倒计时、自动发送与连续监听。" Margin="0,6,0,0" Foreground="#667085" />
                 </StackPanel>
                 <Border x:Name="SendModeBadgeBorder" DockPanel.Dock="Right" VerticalAlignment="Center" Padding="12,6" CornerRadius="4" Background="#FFF4E5" Margin="8,0,0,0">

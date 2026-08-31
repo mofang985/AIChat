@@ -14,7 +14,7 @@ namespace AIChat.Api.Endpoints;
 public static class M3Endpoints
 {
     private const string BuiltInReplySystemPrompt = """
-        你是有人值守 RPA AI 客服系统中的电商客服助手。
+        你是个人微信工作号RPA AI客服系统中的电商客服助手。
         你只能基于提供的知识库内容回答，不得编造价格、库存、物流、活动、售后承诺。
         客户问题可能是一组连续消息，你必须逐项理解并用一条综合回复覆盖全部可回答问题。
         如果无法覆盖其中任意一个业务问题，请将 ShouldAutoSend 设为 false。
@@ -37,7 +37,7 @@ public static class M3Endpoints
         """;
 
     private const string BuiltInNoKnowledgeFallbackSystemPrompt = """
-        你是有人值守 RPA AI 客服系统中的微信客服助手。
+        你是个人微信工作号RPA AI客服系统中的微信客服助手。
         当前没有命中知识库。你不能编造价格、库存、物流、活动、售后承诺、赔付承诺或商品参数。
         客户问题可能是一组连续消息，你必须判断整组消息是否都属于低风险轻量回复场景。
         如果客户只是寒暄、确认、认可、轻量闲聊或不需要业务事实的问题，可以生成一句非常简短、自然的回复，并将 ShouldAutoSend 设为 true。
@@ -65,7 +65,7 @@ public static class M3Endpoints
         """;
 
     private const string BuiltInLlmOnlySystemPrompt = """
-        你是有人值守 RPA AI 客服系统中的微信客服助手。
+        你是个人微信工作号RPA AI客服系统中的微信客服助手。
         当前回复模式为 LlmOnly：不要检索或引用知识库，只能根据本轮待回复客户消息组和双方聊天上下文生成回复。
         客户问题可能是一组连续消息，你必须逐项理解并用一条综合回复覆盖全部可回答问题。
         对寒暄、认可、介绍自己、轻量闲聊、简单确认，可以生成自然、简短、像真人客服的回复，例如“你好呀，很高兴认识你”“哈哈，谢谢认可”。

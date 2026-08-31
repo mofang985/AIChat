@@ -387,7 +387,7 @@ export function App() {
         <header className="page-header">
           <div>
             <p className="eyebrow">M3 Knowledge &amp; AI Base</p>
-            <h1>有人值守 RPA AI 客服管理台</h1>
+            <h1>个人微信工作号RPA AI客服管理台</h1>
             <p className="summary">
               本阶段打通知识库录入、关键词检索、AI 结构化回复、风险判断和回复记录。
             </p>
