@@ -1,0 +1,4 @@
+ultralytics
+Pillow
+pywin32; platform_system == "Windows"
+PyYAML

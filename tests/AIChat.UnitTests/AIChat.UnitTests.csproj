@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="3.1.4" />
+    <PackageReference Include="OpenCvSharp4" Version="4.11.0.20250507" />
+    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.13.0.20260627" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AIChat.Application\AIChat.Application.csproj" />
+    <ProjectReference Include="..\..\src\AIChat.Domain\AIChat.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\CustomerMessageExtractor.cs" Link="RpaClient\CustomerMessageExtractor.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\CustomerMessageTextCorrector.cs" Link="RpaClient\CustomerMessageTextCorrector.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\ChatMessageItem.cs" Link="RpaClient\ChatMessageItem.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\ChatMessageVisualCache.cs" Link="RpaClient\ChatMessageVisualCache.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\OcrResult.cs" Link="RpaClient\OcrResult.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\OcrResultSelector.cs" Link="RpaClient\OcrResultSelector.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\VisionOcrModels.cs" Link="RpaClient\VisionOcrModels.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\CustomerMessageOcrScanPlanner.cs" Link="RpaClient\CustomerMessageOcrScanPlanner.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\ContinuousConversationState.cs" Link="RpaClient\ContinuousConversationState.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\WeChatWindow.cs" Link="RpaClient\WeChatWindow.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\WeChatWindowLock.cs" Link="RpaClient\WeChatWindowLock.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\WeChatWindowTitleMatcher.cs" Link="RpaClient\WeChatWindowTitleMatcher.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\WeChatLayoutCandidateScorer.cs" Link="RpaClient\WeChatLayoutCandidateScorer.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\WeChatConversationListRegionPlanner.cs" Link="RpaClient\WeChatConversationListRegionPlanner.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\UnreadConversationQueueModels.cs" Link="RpaClient\UnreadConversationQueueModels.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\UnreadConversationRowOcrModels.cs" Link="RpaClient\UnreadConversationRowOcrModels.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\UnreadNumberGlyphDetector.cs" Link="RpaClient\UnreadNumberGlyphDetector.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\UnreadConversationQueueStabilityTracker.cs" Link="RpaClient\UnreadConversationQueueStabilityTracker.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Automation\UnreadConversationSwitchModels.cs" Link="RpaClient\UnreadConversationSwitchModels.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\RuntimeLogScreenshotPathExtractor.cs" Link="RpaClient\RuntimeLogScreenshotPathExtractor.cs" />
+    <Compile Include="..\..\src\AIChat.RpaClient\Configuration\RpaClientOptions.cs" Link="RpaClient\RpaClientOptions.cs" />
+  </ItemGroup>
+
+</Project>

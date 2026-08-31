@@ -1,0 +1,277 @@
+<Window x:Class="AIChat.RpaClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="AIChat RPA Client" Height="740" Width="1060"
+        MinHeight="620" MinWidth="960"
+        WindowStartupLocation="CenterScreen">
+    <Grid Background="#F6F7F9">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="64" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="40" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="#FFFFFF" BorderBrush="#DFE3EA" BorderThickness="0,0,0,1">
+            <DockPanel Margin="24,0">
+                <StackPanel VerticalAlignment="Center">
+                    <TextBlock Text="有人值守 RPA AI 客服客户端" FontSize="22" FontWeight="SemiBold" Foreground="#1F2937" />
+                    <TextBlock Text="M4.5：当前微信会话 OCR、AI 回复建议、审核倒计时、自动发送与连续监听。" Margin="0,6,0,0" Foreground="#667085" />
+                </StackPanel>
+                <Border x:Name="SendModeBadgeBorder" DockPanel.Dock="Right" VerticalAlignment="Center" Padding="12,6" CornerRadius="4" Background="#FFF4E5" Margin="8,0,0,0">
+                    <TextBlock x:Name="SendModeBadge" Text="发送模式未知" Foreground="#B54708" FontWeight="SemiBold" />
+                </Border>
+                <Border DockPanel.Dock="Right" VerticalAlignment="Center" Padding="12,6" CornerRadius="4" Background="#EFF8FF">
+                    <TextBlock x:Name="AuthorizationBadge" Text="等待注册" Foreground="#175CD3" FontWeight="SemiBold" />
+                </Border>
+            </DockPanel>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="360" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Border Padding="20" Background="#FFFFFF" BorderBrush="#DFE3EA" BorderThickness="1" CornerRadius="6">
+                        <StackPanel>
+                            <TextBlock Text="连接配置" FontSize="18" FontWeight="SemiBold" Foreground="#1F2937" />
+                            <TextBlock Text="由员工在 VM 内填写或确认，注册成功后开始心跳。" Margin="0,8,0,16" TextWrapping="Wrap" Foreground="#667085" />
+
+                            <TextBlock Text="API 地址" Foreground="#344054" />
+                            <TextBox x:Name="ApiBaseUrlTextBox" Height="34" Margin="0,6,0,12" />
+
+                            <TextBlock Text="客户端实例 Key" Foreground="#344054" />
+                            <TextBox x:Name="ClientKeyTextBox" Height="34" Margin="0,6,0,12" />
+
+                            <TextBlock Text="员工 ID（可选）" Foreground="#344054" />
+                            <TextBox x:Name="EmployeeIdTextBox" Height="34" Margin="0,6,0,12" />
+
+                            <TextBlock Text="VM ID（可选）" Foreground="#344054" />
+                            <TextBox x:Name="VirtualDeviceIdTextBox" Height="34" Margin="0,6,0,12" />
+
+                            <TextBlock Text="微信工作号 ID（可选）" Foreground="#344054" />
+                            <TextBox x:Name="WeChatAccountIdTextBox" Height="34" Margin="0,6,0,16" />
+
+                            <Button x:Name="RegisterButton" Content="注册客户端" Height="38" Click="RegisterButton_Click" />
+                            <Button x:Name="HeartbeatButton" Content="开启心跳" Height="38" Margin="0,10,0,0" Click="HeartbeatButton_Click" />
+                        </StackPanel>
+                    </Border>
+
+                    <Border Margin="0,16,0,0" Padding="20" Background="#FFFFFF" BorderBrush="#DFE3EA" BorderThickness="1" CornerRadius="6">
+                        <StackPanel>
+                            <TextBlock Text="任务控制" FontSize="18" FontWeight="SemiBold" Foreground="#1F2937" />
+                            <TextBlock Text="请先打开微信并进入目标客户会话。授权有效后，单次任务执行一轮回复；连续监听只处理当前会话的新客户消息。" Margin="0,8,0,16" TextWrapping="Wrap" Foreground="#667085" />
+
+                            <Button x:Name="StartTaskButton" Content="开始任务" Height="38" IsEnabled="False" Click="StartTaskButton_Click" />
+                            <Button x:Name="StartContinuousButton" Content="开始连续监听" Height="38" Margin="0,10,0,0" IsEnabled="False" Click="StartContinuousButton_Click" />
+                            <Button x:Name="ScanUnreadQueueButton" Content="扫描未读队列（只读）" Height="38" Margin="0,10,0,0" IsEnabled="False" Click="ScanUnreadQueueButton_Click" />
+                            <Button x:Name="SwitchUnreadConversationButton" Content="切换首个可切换候选（受控）" Height="38" Margin="0,10,0,0" IsEnabled="False" Click="SwitchFirstUnreadConversationButton_Click" />
+                            <Button x:Name="PauseTaskButton" Content="暂停任务" Height="38" Margin="0,10,0,0" Click="PauseTaskButton_Click" />
+                            <Button x:Name="EmergencyStopButton" Content="紧急停止" Height="38" Margin="0,10,0,0" Background="#FEE4E2" BorderBrush="#FDA29B" Foreground="#B42318" Click="EmergencyStopButton_Click" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+
+            <Grid Grid.Column="1" Margin="16,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1.35*" MinHeight="210" />
+                    <RowDefinition Height="*" MinHeight="150" />
+                </Grid.RowDefinitions>
+
+                <Border Padding="16" Background="#FFFFFF" BorderBrush="#DFE3EA" BorderThickness="1" CornerRadius="6">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,18,12">
+                            <TextBlock Text="客户端实例" Foreground="#667085" />
+                            <TextBlock x:Name="ClientInstanceIdTextBlock" Text="未注册" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,12">
+                            <TextBlock Text="最近心跳" Foreground="#667085" />
+                            <TextBlock x:Name="HeartbeatStatusTextBlock" Text="未上报" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="0" Margin="0,0,18,12">
+                            <TextBlock Text="当前员工" Foreground="#667085" />
+                            <TextBlock x:Name="EmployeeTextBlock" Text="未绑定" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,12">
+                            <TextBlock Text="当前 VM" Foreground="#667085" />
+                            <TextBlock x:Name="VmTextBlock" Text="未绑定" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="0" Margin="0,0,18,12">
+                            <TextBlock Text="授权状态" Foreground="#667085" />
+                            <TextBlock x:Name="AccessStatusTextBlock" Text="未知" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,12">
+                            <TextBlock Text="授权有效期" Foreground="#667085" />
+                            <TextBlock x:Name="ValidToTextBlock" Text="未设置" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,18,0">
+                            <TextBlock Text="任务按钮" Foreground="#667085" />
+                            <TextBlock x:Name="CanStartTextBlock" Text="等待授权结果" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="3" Grid.Column="1">
+                            <TextBlock Text="运行模式" Foreground="#667085" />
+                            <TextBlock x:Name="RuntimeModeTextBlock" Text="有人值守，单线程顺序执行" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1" Margin="0,12,0,0" Padding="16" Background="#FFFFFF" BorderBrush="#DFE3EA" BorderThickness="1" CornerRadius="6">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,0,18,12">
+                            <TextBlock Text="当前任务" Foreground="#667085" />
+                            <TextBlock x:Name="CurrentTaskStatusTextBlock" Text="未开始" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,12">
+                            <TextBlock Text="发送倒计时" Foreground="#667085" />
+                            <TextBlock x:Name="CountdownTextBlock" Text="未开始" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,12">
+                            <TextBlock Text="OCR 客户消息" Foreground="#667085" />
+                            <TextBox x:Name="OcrTextBox" Height="46" Margin="0,6,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,0,12">
+                            <TextBlock Text="AI 回复" Foreground="#667085" />
+                            <TextBox x:Name="AiReplyTextBox" Height="56" Margin="0,6,0,0" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="3" Grid.Column="0" Margin="0,0,18,0">
+                            <TextBlock Text="风险结果" Foreground="#667085" />
+                            <TextBlock x:Name="RiskLevelTextBlock" Text="未生成" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="3" Grid.Column="1">
+                            <TextBlock Text="最后异常" Foreground="#667085" />
+                            <TextBlock x:Name="LastErrorTextBlock" Text="无" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,12,0,0">
+                            <TextBlock Text="坐标模式" Foreground="#667085" />
+                            <TextBlock x:Name="LayoutStatusTextBlock" Text="未定位" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="5" Grid.Column="0" Margin="0,12,18,0">
+                            <TextBlock Text="连续监听状态" Foreground="#667085" />
+                            <TextBlock x:Name="ContinuousStatusTextBlock" Text="未开启" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="5" Grid.Column="1" Margin="0,12,0,0">
+                            <TextBlock Text="连续回复次数" Foreground="#667085" />
+                            <TextBlock x:Name="ContinuousReplyCountTextBlock" Text="0/0" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="6" Grid.Column="0" Margin="0,12,18,0">
+                            <TextBlock Text="最近轮询" Foreground="#667085" />
+                            <TextBlock x:Name="ContinuousLastPollTextBlock" Text="未轮询" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="6" Grid.Column="1" Margin="0,12,0,0">
+                            <TextBlock Text="连续失败次数" Foreground="#667085" />
+                            <TextBlock x:Name="ContinuousFailureCountTextBlock" Text="0" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="7" Grid.Column="0" Margin="0,12,18,0">
+                            <TextBlock Text="合并等待" Foreground="#667085" />
+                            <TextBlock x:Name="ContinuousMergeCountdownTextBlock" Text="未等待" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+                        <StackPanel Grid.Row="7" Grid.Column="1" Margin="0,12,0,0">
+                            <TextBlock Text="最新消息" Foreground="#667085" />
+                            <TextBlock x:Name="ContinuousLatestSenderTextBlock" Text="未知发送方" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                            <TextBlock x:Name="ContinuousLatestMessageTextBlock" Text="未识别" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,12,0,0">
+                            <TextBlock Text="锁定目标" Foreground="#667085" />
+                            <TextBlock x:Name="WindowTargetTextBlock" Text="未锁定" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,12,0,0">
+                            <TextBlock Text="未读队列（只读）" Foreground="#667085" />
+                            <TextBlock x:Name="UnreadQueueStatusTextBlock" Text="未扫描" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                            <Grid Margin="0,6,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0" Margin="0,0,18,0">
+                                    <TextBlock Text="最近扫描" Foreground="#667085" />
+                                    <TextBlock x:Name="UnreadQueueLastScanTextBlock" Text="未扫描" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Text="候选数量" Foreground="#667085" />
+                                    <TextBlock x:Name="UnreadQueueCandidateCountTextBlock" Text="0" Margin="0,4,0,0" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Grid>
+                            <ListBox x:Name="UnreadQueueListBox" Height="132" Margin="0,8,0,0" />
+                        </StackPanel>
+                    </Grid>
+                    </ScrollViewer>
+                </Border>
+
+                <Border Grid.Row="2" Margin="0,12,0,0" Padding="16" Background="#FFFFFF" BorderBrush="#DFE3EA" BorderThickness="1" CornerRadius="6">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="运行日志" FontSize="16" FontWeight="SemiBold" Foreground="#1F2937" />
+                            <TextBlock Text="用于值守员工确认注册、心跳、授权变化和调试截图。双击含截图路径的日志可打开本地图片。" Margin="0,6,0,10" Foreground="#667085" />
+                        </StackPanel>
+                        <ListBox x:Name="RuntimeLogListBox" Grid.Row="1" MinHeight="90" DisplayMemberPath="DisplayText" MouseDoubleClick="RuntimeLogListBox_MouseDoubleClick">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="ToolTip" Value="{Binding ScreenshotToolTip}" />
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <Border Grid.Row="2" Background="#FFFFFF" BorderBrush="#DFE3EA" BorderThickness="0,1,0,0">
+            <DockPanel Margin="24,0">
+                <TextBlock VerticalAlignment="Center" Text="AIChat.RpaClient" Foreground="#667085" />
+                <TextBlock DockPanel.Dock="Right" VerticalAlignment="Center" Text="M4.5 Single Conversation Continuous RPA" Foreground="#667085" />
+            </DockPanel>
+        </Border>
+    </Grid>
+</Window>

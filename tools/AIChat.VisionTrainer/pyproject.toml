@@ -1,0 +1,18 @@
+[project]
+name = "aichat-vision-trainer"
+version = "0.1.0"
+description = "AIChat M4.2 YOLO vision training CLI"
+requires-python = ">=3.11"
+dependencies = [
+  "ultralytics",
+  "Pillow",
+  "pywin32; platform_system == 'Windows'",
+  "PyYAML"
+]
+
+[project.scripts]
+aichat-vision = "aichat_vision.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"

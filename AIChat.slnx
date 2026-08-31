@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/AIChat.Api/AIChat.Api.csproj" />
+    <Project Path="src/AIChat.Application/AIChat.Application.csproj" />
+    <Project Path="src/AIChat.Domain/AIChat.Domain.csproj" />
+    <Project Path="src/AIChat.Infrastructure/AIChat.Infrastructure.csproj" />
+    <Project Path="src/AIChat.RpaClient/AIChat.RpaClient.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/AIChat.IntegrationTests/AIChat.IntegrationTests.csproj" />
+    <Project Path="tests/AIChat.UnitTests/AIChat.UnitTests.csproj" />
+  </Folder>
+</Solution>

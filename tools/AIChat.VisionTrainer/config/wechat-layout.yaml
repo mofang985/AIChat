@@ -1,0 +1,18 @@
+modelCode: wechat-layout
+inputSize: 640
+labels:
+  - conversation_list
+  - chat_content
+  - input_area
+  - input_box
+  - send_button
+  - customer_message_bubble
+  - self_message_bubble
+dataset:
+  train: images/train
+  val: images/val
+  test: images/test
+artifactFiles:
+  model: wechat-layout.onnx
+  labels: labels.txt
+  version: model-version.json
